@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#define MAX_VAL 1000000
+using namespace std;
+int N; //size of N;
+int wall[20][20] = {0};
+int paint[20][20] = {0};
+int minN = MAX_VAL;
+bool flag = false;
+bool searchAns(){
+    for(int i = 1; i <= N-1; i++){
+        for(int j = 1; j <= N; j++){
+            if((wall[i][j] + paint[i][j] + paint[i][j-1] + paint[i][j+1] + paint[i-1][j]) % 2 == 0){
+                paint[i+1][j] = 1;
+            }
+            else{
+                paint[i+1][j] = 0;
+            }
+        }
+    }
+    for(int j = 1; j <= N; j++){
+        if((wall[N][j] + paint[N][j] + paint[N][j-1] + paint[N][j+1] + paint[N-1][j]) % 2 == 0){
+            return false;
+        }
+    }
+    int tmp = 0;
+    for(int i = 1; i <= N; i++){
+        for(int j = 1; j <= N; j++){
+            if(paint[i][j])tmp++;
+        }
+    }
+    if(tmp < minN)minN = tmp;
+    return true;
+}
+int main(){
+    cin >> N;
+    for(int i = 1; i <= N; i++){
+        for(int j = 1; j <= N; j++){
+            char tmp;
+            cin >> tmp;
+            if(tmp == 'y')wall[i][j] = 1;
+        }
+    }
+    for(int i = 1; i <= pow(2,N); i++){
+        if(searchAns())flag = true;
+        int c = 1;
+        paint[1][c]++;
+        while(paint[1][c] > 1){
+            paint[1][c] = 0;
+            c++;
+            paint[1][c]++;
+        }
+    }
+    if(flag)cout << minN << endl;
+    else{
+        cout << "inf" << endl;
+    }
+}
