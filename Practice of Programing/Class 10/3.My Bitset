@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+template <int bitNum>
+struct MyBitset 
+{
+	char a[bitNum/8+1];
+	MyBitset() { memset(a,0,sizeof(a));};
+	void Set(int i,int v) {
+		char & c = a[i/8];
+		int bp = i % 8;
+		if( v ) 
+			c |= (1 << bp);
+		else 
+			c &= ~(1 << bp);
+	}
+    class bitMemory{
+		public:
+			const int bitPos;
+			char* bytePos;
+			bitMemory(int x, char* y):bitPos(x), bytePos(y){}
+			bitMemory& operator=(int val){
+				if(val)
+					*bytePos |= (1 << bitPos);
+				else 
+					*bytePos &= ~(1 << bitPos);
+				return *this;
+			}
+			operator bool(){
+				return 1 & (*bytePos >> bitPos);
+			}
+			bitMemory& operator=(bitMemory& p){
+				*this = bool(p);
+				return *this;
+			}
+		};
+    bitMemory operator[](int x){
+        return bitMemory(x%8, a+x/8);
+    }
+void Print() {
+		for(int i = 0;i < bitNum; ++i) 
+			cout << (*this) [i];
+		cout << endl;
+	}
+
+};
+
+int main()
+{
+	int n;
+	int i,j,k,v;
+	while( cin >>  n) {
+		MyBitset<20> bs;
+		for(int i = 0;i < n; ++i) {
+			int t;
+			cin >> t;
+			bs.Set(t,1);
+		}
+		bs.Print();
+		cin >> i >> j >> k >> v;
+		bs[k] = v;
+		bs[i] = bs[j] = bs[k];
+		bs.Print();
+		cin >> i >> j >> k >> v;
+		bs[k] = v;
+		(bs[i] = bs[j]) = bs[k];
+		bs.Print();
+	}
+	return 0;
+}
