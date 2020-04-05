@@ -1,0 +1,71 @@
+#include <iostream>
+#include <cstring>
+#include <cmath>
+using namespace std;
+int path[10], minMove;
+int clk[10],clk0[10];
+int actionSet[10][10] = {
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,1,1,0,1,1,0,0,0,0},
+    {0,1,1,1,0,0,0,0,0,0},
+    {0,0,1,1,0,1,1,0,0,0},
+    {0,1,0,0,1,0,0,1,0,0},
+    {0,0,1,0,1,1,1,0,1,0},
+    {0,0,0,1,0,0,1,0,0,1},
+    {0,0,0,0,1,1,0,1,1,0},
+    {0,0,0,0,0,0,0,1,1,1},
+    {0,0,0,0,0,1,1,0,1,1}
+};
+
+bool actionMove(int x[10]){
+    int cnt = 0;
+    for(int i = 1; i <= 9; i++){
+        clk[i] = clk0[i];
+        for(int j = 1; j <= 9; j++){
+            clk[i] += actionSet[j][i]*x[j];
+            clk[i] %= 4;
+        }
+        if(clk[i] == 0)cnt++;
+    }
+    if(cnt == 9)return true;
+    return false;
+}
+
+int main(){
+    for(int i = 1; i <= 9; i++)
+        cin >> clk0[i];
+    for(int i0 = 0; i0 < 4; i0++){
+        for(int i1 = 0; i1 < 4; i1++){
+            for(int i2 = 0; i2 < 4; i2++){
+                for(int i3 = 0; i3 < 4; i3++){
+                    for(int i4 = 0; i4 < 4; i4++){
+                        for(int i5 = 0; i5 < 4; i5++){
+                            for(int i6 = 0; i6 < 4; i6++){
+                                for(int i7 = 0; i7<4; i7++){
+                                    for(int i8 = 0; i8<4; i8++){
+                                        path[1] = i0,
+                                        path[2] = i1;
+                                        path[3] = i2;
+                                        path[4] = i3;
+                                        path[5] = i4;
+                                        path[6] = i5;
+                                        path[7] = i6;
+                                        path[8] = i7;
+                                        path[9] = i8;
+                                        if(actionMove(path)){
+                                            for(int i = 1; i<= 9; i++){
+                                                for(int j = 1; j <= path[i]; j++){
+                                                    cout << i << " ";
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                         }
+                    }
+                }
+            }
+        }
+    }
+}
