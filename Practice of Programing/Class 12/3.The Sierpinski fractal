@@ -1,0 +1,33 @@
+#include <iostream>
+#include <cstring>
+#include <cmath>
+using namespace std;
+char paint[1030][2100]{};
+void solution(int n, int i, int j){
+    if(n == 1){
+        paint[i][j] = '/',paint[i][j+1] = '\\';
+        paint[i+1][j-1] = '/',paint[i+1][j] = '_',paint[i+1][j+1] = '_',paint[i+1][j+2] = '\\';
+        return;
+    }
+    solution(n-1,i,j);
+    solution(n-1,i+pow(2,n-1),j-pow(2,n-1));
+    solution(n-1,i+pow(2,n-1),j+pow(2,n-1));
+}
+void print(int n, int m){
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            cout << paint[i][j];
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+int main(){
+    int N;
+    while(cin >> N && N){
+        memset(paint,' ',sizeof(paint));
+        solution(N,1,pow(2,N));
+        print(pow(2,N),pow(2,N+1));
+    }
+}
