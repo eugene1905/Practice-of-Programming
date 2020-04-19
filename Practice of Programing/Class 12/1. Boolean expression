@@ -1,0 +1,60 @@
+#include <iostream>
+#include <sstream>
+#include <stack>
+using namespace std;
+stringstream ss;
+bool rec() {
+    bool reverse = false;
+    stack<char> sym;
+    stack<bool> tf;
+    bool b;
+    char c;
+    while(ss >> c && !ss.eof()){
+        switch(c){
+            case ' ':
+                break;
+            case '(':
+                tf.push(rec() ^ reverse);
+                reverse = false;
+                break;
+            case ')':
+                return tf.top();
+            case 'V':
+                tf.push(true ^ reverse);
+                reverse = false;
+                break;
+            case 'F':
+                tf.push(false ^ reverse);
+                reverse = false;
+                break;
+            case '&':
+                sym.push(c);
+                break;
+            case '|':
+                sym.push(c);
+                break;
+            case '!':
+                reverse = true;
+                break;
+        }
+        if(tf.size() == 2){
+            bool a1 = tf.top();
+            tf.pop();
+            bool a2 = tf.top();
+            tf.pop();
+            tf.push(sym.top() == '|'? (a1 || a2):(a1 && a2));
+            sym.pop();
+        }
+    }
+    return tf.top();
+}
+int main() {
+    string str;
+    int n = 1;
+    while(getline(cin, str)) {
+        ss << str;
+        cout << "Expression " << n << ": " << (rec()?"V":"F") << endl;
+        n++;
+        ss.clear();
+    }
+}
