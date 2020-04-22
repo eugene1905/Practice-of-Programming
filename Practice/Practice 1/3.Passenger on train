@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+int N,X;
+int getX(int n,int x1, int x2, int total,int x){
+    if(n == x)return total;
+    return getX(n+1, x2, x1+x2,total + x1, x);
+}
+
+int main(){
+    int a,m;
+    cin >> a >> N >> m >> X;
+    for (int i = 0; i <= 1000; i++){
+        if(getX(3, a, i, a, N) == m){
+            cout << getX(3, a, i, a, X+1) << endl;
+            return 0;
+        }
+    }
+}
