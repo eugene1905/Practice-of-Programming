@@ -1,0 +1,53 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+#include <cmath>
+using namespace std;
+int light[20][20] = {0};
+int press[20][20] = {0};
+bool flag = false;
+bool searchAns(){
+    for(int i = 1; i <= 4; i++){
+        for(int j = 1; j <= 6; j++){
+            if((light[i][j] + press[i][j] + press[i][j-1] + press[i][j+1] + press[i-1][j]) % 2 == 0){
+                press[i+1][j] = 1;
+            }
+            else{
+                press[i+1][j] = 0;
+            }
+        }
+    }
+    for(int j = 1; j <= 6; j++){
+        if((light[5][j] + press[5][j] + press[5][j-1] + press[5][j+1] + press[4][j]) % 2 == 0){
+            return false;
+        }
+    }
+    return true;
+}
+int main(){
+    for(int i = 1; i <= 5; i++){
+        for(int j = 1; j <= 6; j++){
+            int t;
+            cin >> t;
+            light[i][j] = !t;
+        }
+    }
+    for(int i = 1; i <= pow(2,6); i++){
+        if(searchAns()){
+            for(int i = 1; i <= 5; i++){
+                for(int j = 1; j <= 6; j++){
+                    cout << press[i][j] << " ";
+                }
+                cout << endl;
+            }
+            return 0;
+        }
+        int c = 1;
+        press[1][c]++;
+        while(press[1][c] > 1){
+            press[1][c] = 0;
+            c++;
+            press[1][c]++;
+        }
+    }
+}
