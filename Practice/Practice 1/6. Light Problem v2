@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+char oriLight[5];
+char Lights[5];
+char result[5];
+int getBit(char a, int i){
+    return (a >> i) & 1;  
+}
+void setBit(char &a, int i, int v){
+    if(v)
+        a |= (1 << i);
+    else
+        a &= ~(1 << i);
+}
+void flipBit(char &a, int i){
+    a ^= (1 << i);
+}
+
+int main(){
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 6; j++){
+            int tmp; 
+            cin >> tmp;
+            setBit(oriLight[i],j,tmp);
+        }
+    }
+    int switchs;
+    for(int n = 0; n < 64; n++){
+        memcpy(Lights,oriLight,sizeof(Lights));
+        switchs = n;
+        for(int i = 0; i < 5; i++){
+            result[i] = switchs;
+            for(int j = 0; j < 6; j++){
+                if(getBit(result[i],j)){
+                    if(j > 0)
+                        flipBit(Lights[i],j-1);
+                    flipBit(Lights[i],j);
+                    if(j < 5)
+                        flipBit(Lights[i],j+1);
+                    if(i < 4)
+                        flipBit(Lights[i+1],j);
+                }
+            }
+            switchs = Lights[i];
+        }
+        if(Lights[4] == 0){
+            for(int i = 0; i < 5; i++){
+                for(int j = 0; j < 6; j++){
+                    cout << getBit(result[i],j) << ( j == 5 ? "" : " ");
+                }
+                cout << endl;
+            }
+            break;
+        }
+    }
+}
