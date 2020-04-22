@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+int main(){
+    int N;
+    double A,B;
+    cin >> N >> A >> B;
+    double maxF  = A / B;
+    double maxD = N;
+    double maxN = 1;
+    for(int i = 2; i <= N; i++){
+        for(int j = 1; j < i; j++){
+            if(j != 1 && i % j == 0)continue;
+            double f = double(j) / double(i);
+            if(f > maxF)break;
+            if(f > maxN / maxD && f < maxF){
+                maxN = j;
+                maxD = i;
+            }
+        }
+    }
+    cout << maxN << " " << maxD << endl;
+}
