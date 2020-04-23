@@ -1,0 +1,39 @@
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+#define _USE_MATH_DEFINES
+#include <cmath>
+using namespace std;
+int n, m; //number of pi, friends
+double pie[10000];
+
+bool solution(double v){
+    int k = 0;
+    for(int i = 0; i < n; i++)
+        k += pie[i] / v; 
+    if(k > m)
+        return true;
+    return false;
+}
+
+int main(){
+    cin >> n >> m;
+    double ans, l = 0, r = 0;
+    for(int i = 0; i < n; i++){
+        int tmp;
+        cin >> tmp;
+        pie[i] = tmp * tmp * M_PI;
+        r = max(r,pie[i]);
+    }
+    double eps = 1e-6;
+    while(r - l > eps){
+        double mid = l + (r - l) / 2;
+        if(solution(mid)){
+            ans = mid;
+            l = mid;
+        }
+        else
+            r = mid;
+    }
+    cout << fixed << setprecision(3) <<  ans << endl;
+}
